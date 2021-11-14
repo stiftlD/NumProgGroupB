@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 import javax.swing.JFrame;
 
 /**
@@ -10,13 +12,22 @@ import javax.swing.JFrame;
  *          This class just contains a main() method to use the FastMath class
  *          and to invoke the plotter.
  */
+
+
 public class Test_FastInverse {
+
+	//compute
+	public int findBestMagic(){
+		int result = 0;
+		return 0;
+	}
+
 
 	/** Beispielwerte fuer IEEE Standard mit 32 Bits */
 	private static int MAGIC_NUMBER = 0x5f3759df;
 
-	private static int anzBitsExponent = 8;
-	private static int anzBitsMantisse = 24;
+	private static int anzBitsExponent = 4;
+	private static int anzBitsMantisse = 8;
 
 	/**
 	 * Uses the FastMath class and invokes the plotter. In a logarithmically
@@ -37,16 +48,34 @@ public class Test_FastInverse {
 		int numOfSamplingPts = 1001;
 		float[] xData = new float[numOfSamplingPts];
 		float[] yData = new float[numOfSamplingPts];
+		int currMagic = 0;
+		int bestMagic = 0;
+		double leastSum = (double) Integer.MAX_VALUE;
+		double currSum = 0.0;
 		float x = 0.10f;
 
-		/* calculate data to plot */
-		for (int i = 0; i < numOfSamplingPts; i++) {
-			xData[i] = x;
-			Gleitpunktzahl y = new Gleitpunktzahl(x);
-			yData[i] = (float) FastMath.absInvSqrtErr(y);
-
-			x *= Math.pow(100.0d, 1.0d / numOfSamplingPts);
+		//test magic numbers, keeping the one with the least sum of absolute errors
+		for (int j = 0; j < Integer.MAX_VALUE; j++){
+			/* calculate data to plot */
+			x = 0.10f;
+			FastMath.setMagic(currMagic);
+			currSum = 0.0;
+			for (int i = 0; i < numOfSamplingPts; i++) {
+				xData[i] = x;
+				Gleitpunktzahl y = new Gleitpunktzahl(x);
+				yData[i] = (float) FastMath.absInvSqrtErr(y);
+				currSum += yData[i];
+				x *= Math.pow(100.0d, 1.0d / numOfSamplingPts);
+			}
+			//found a magic number with less erorr
+			if (currSum < leastSum){
+				leastSum = currSum;
+				bestMagic = currMagic;
+				System.out.println("found new magic number: " + bestMagic);
+			}
+			currMagic++;
 		}
+		System.out.println("best magic number: " + bestMagic);
 
 		/* initialize plotter */
 		JFrame frame = new JFrame();
