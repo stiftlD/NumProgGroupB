@@ -54,7 +54,7 @@ public class Test_FastInverse {
 		double currSum = 0.0;
 		float x = 0.10f;
 
-		//test magic numbers, keeping the one with the least sum of absolute errors
+		//test magic numbers, keeping the one with the least sum of relative errors
 		for (int j = 0; j < Integer.MAX_VALUE; j++){
 			/* calculate data to plot */
 			x = 0.10f;
@@ -63,7 +63,7 @@ public class Test_FastInverse {
 			for (int i = 0; i < numOfSamplingPts; i++) {
 				xData[i] = x;
 				Gleitpunktzahl y = new Gleitpunktzahl(x);
-				yData[i] = (float) FastMath.absInvSqrtErr(y);
+				yData[i] = (float) FastMath.relInvSqrtErr(y);
 				currSum += yData[i];
 				x *= Math.pow(100.0d, 1.0d / numOfSamplingPts);
 			}
