@@ -91,7 +91,23 @@ public class LinearInterpolation implements InterpolationMethod {
     @Override
     public double evaluate(double z) {
         /* TODO: diese Methode ist zu implementieren */
-        return 0.0;
+        int n = y.length;
+        //Fall z außerhalb der Stützgrenzen
+        if (z < x[0]) return y[0];
+        else if (z > x[n-1]) return y[n-1];
+
+        //finde i s.d. x[i] < z < x[i+1]
+        int i = 0;
+        while (x[i+1] < z && i < n) i++;
+
+        double rise = y[i+1] - y[i];
+        double run = x[i+1] - x[i]; 
+        double slope = rise / run; //Steigung
+
+        //Werte Gerade an Stelle z aus
+        double result = y[i] + ((z - x[i]) * slope);
+
+        return result;
     }
 
 }

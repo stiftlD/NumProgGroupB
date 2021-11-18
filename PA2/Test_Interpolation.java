@@ -6,8 +6,21 @@ public class Test_Interpolation {
      * @param args
      */
     public static void main(String[] args) {
+        testLinear();
         testNewton();
         testSplines();
+    }
+
+    private static void testLinear() {
+        double[] x = {-1, 0, 1};
+        double[] y = {1, -1, 1};
+        LinearInterpolation l = new LinearInterpolation();
+        l.x = x;
+        l.y = y;
+
+        System.out.println(l.evaluate(0.5) + " sollte sein: 0.0");
+        System.out.println("-------------------------------");
+
     }
 
     private static void testNewton() {
