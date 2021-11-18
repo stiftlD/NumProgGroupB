@@ -10,6 +10,7 @@ public class Test {
      */
     public static void main(String[] args) {
         testNewtonCoefficients();
+        testNewtonAddSmplPt();
         testNewton();
         testSplines();
         testFFT();
@@ -23,6 +24,18 @@ public class Test {
 
         System.out.println("Koeffizienten: " + Arrays.toString(p.getCoefficients()) + " sollte sein: {3, -3, 2}");
         System.out.println("Diagonale: " + Arrays.toString(p.getDividedDifferences()) + " sollte sein: {2, 1, 1}");        
+        System.out.println("-------------------------------");
+    }
+
+    private static void testNewtonAddSmplPt() {
+        //Beispiel von ÜB3.2)
+        double[] x = { 0, 1, 2 };
+        double[] y = { 3, 0, 1 };
+        NewtonPolynom p = new NewtonPolynom(x, y);
+        p.addSamplingPoint(1.5, 0.0);
+
+        System.out.println("Koeffizienten: " + Arrays.toString(p.getCoefficients()) + " sollte sein: {3, -3, 2, 0}");
+        System.out.println("Diagonale: " + Arrays.toString(p.getDividedDifferences()) + " sollte sein: {0, 2, 2, 0}");        
         System.out.println("-------------------------------");
     }
 

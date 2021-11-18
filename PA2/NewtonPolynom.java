@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.ArrayList;
 
 /**
  * Die Klasse Newton-Polynom beschreibt die Newton-Interpolation. Die Klasse
@@ -88,8 +89,8 @@ public class NewtonPolynom implements InterpolationMethod {
     private void computeCoefficients(double[] y) {
         /* TODO: diese Methode ist zu implementieren */
         int n = y.length;
-        a = new double[n];
-        f = new double[n];
+        if (a == null) a = new double[n];
+        if (f == null) f = new double[n];
         double[] col = Arrays.copyOf(y, n);
         
         a[0] = col[0]; //1. Koeffizient
@@ -143,6 +144,27 @@ public class NewtonPolynom implements InterpolationMethod {
      */
     public void addSamplingPoint(double x_new, double y_new) {
         /* TODO: diese Methode ist zu implementieren */
+
+        //Fall x_new schon vorhanden
+        if (Arrays.asList(x).contains(x_new)) return;
+
+        //füge Stützstelle hinzu
+        x = Arrays.copyOf(x, x.length +1);
+        x[x.length-1] = x_new;
+
+        //neue diagonale
+        f = Arrays.copyOf(f, f.length + 1);
+        f[f.length-1] = y_new;
+
+        int n = x.length;
+        //baue diagonale neu auf
+        for(int k = 1; k < n; k++){
+            f[n-k-1] = (f[n-k] - f[n-k-1]) / (x[n - 1] - x[n - k - 1]);
+        }
+
+        //füge Koeffizient hinzu
+        a = Arrays.copyOf(a, a.length +1);
+        a[a.length - 1] = f[0];
     }
 
     /**
