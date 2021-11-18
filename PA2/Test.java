@@ -9,9 +9,21 @@ public class Test {
      * @param args
      */
     public static void main(String[] args) {
+        testNewtonCoefficients();
         testNewton();
         testSplines();
         testFFT();
+    }
+
+    private static void testNewtonCoefficients() {
+        //Beispiel von ÜB3.2)
+        double[] x = { 0, 1, 2 };
+        double[] y = { 3, 0, 1 };
+        NewtonPolynom p = new NewtonPolynom(x, y);
+
+        System.out.println("Koeffizienten: " + Arrays.toString(p.getCoefficients()) + " sollte sein: {3, -3, 2}");
+        System.out.println("Diagonale: " + Arrays.toString(p.getDividedDifferences()) + " sollte sein: {2, 1, 1}");        
+        System.out.println("-------------------------------");
     }
 
     private static void testNewton() {

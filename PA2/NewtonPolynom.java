@@ -87,6 +87,28 @@ public class NewtonPolynom implements InterpolationMethod {
      */
     private void computeCoefficients(double[] y) {
         /* TODO: diese Methode ist zu implementieren */
+        int n = y.length;
+        a = new double[n];
+        f = new double[n];
+        double[] col = Arrays.copyOf(y, n);
+        
+        a[0] = col[0]; //1. Koeffizient
+
+        //laufe spalten (ks) ab, berechne dabei von oben nach unten neu, speicher den letzten wert in Diagole f
+        //1. Spalte ist Vektor y
+        for (int k = 1; k < n; k++){
+
+            for (int i = 0; i < n-k; i++){
+                col[i] = (col[i+1] - col[i]) / (x[i+k] - x[i]);
+            }
+            
+            //Letzter Wert der Spalte liegt in Diagonale
+            this.f[n-k] = col[n-k];
+            //a_k liegt in erster Reihe
+            a[k] = col[0];
+        }
+
+        f[0] = col[0]; //letzter Koeffizient in Diagonale
     }
 
     /**
