@@ -87,7 +87,6 @@ public class NewtonPolynom implements InterpolationMethod {
      * Es gilt immer: x und y sind gleich lang.
      */
     private void computeCoefficients(double[] y) {
-        /* TODO: diese Methode ist zu implementieren */
         int n = y.length;
         if (a == null) a = new double[n];
         if (f == null) f = new double[n];
@@ -109,7 +108,7 @@ public class NewtonPolynom implements InterpolationMethod {
             a[k] = col[0];
         }
 
-        f[0] = col[0]; //letzter Koeffizient in Diagonale
+        f[0] = a[n-1]; //letzter Koeffizient in Diagonale
     }
 
     /**
@@ -175,6 +174,18 @@ public class NewtonPolynom implements InterpolationMethod {
     @Override
     public double evaluate(double z) {
         /* TODO: diese Methode ist zu implementieren */
-        return 0.0;
+        int n = x.length-1;
+        
+        //p(x) = a_0 + (x-x_0)*(a_1 + (x-x_1)* (...(a_n-1 + (x-x_n-1)*a_n)...))
+        //von innen nach außen
+        int product = 1;
+        for(int i = n; i > 1; i--){
+            product *= a[i] * (z - x[i-1]) + a[i-1];
+        }
+        //erste Summanden
+        product *= (z - x[0]);
+        product += a[0];
+
+        return product;
     }
 }

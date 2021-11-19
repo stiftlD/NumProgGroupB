@@ -17,6 +17,8 @@ public class Test {
     }
 
     private static void testNewtonCoefficients() {
+        System.out.println("Teste Newton compute Coefficients");
+
         //Beispiel von ÜB3.2)
         double[] x = { 0, 1, 2 };
         double[] y = { 3, 0, 1 };
@@ -28,6 +30,8 @@ public class Test {
     }
 
     private static void testNewtonAddSmplPt() {
+        System.out.println("Teste Newton Add Sampling Point");
+
         //Beispiel von ÜB3.2)
         double[] x = { 0, 1, 2 };
         double[] y = { 3, 0, 1 };
@@ -40,16 +44,20 @@ public class Test {
     }
 
     private static void testNewton() {
+        System.out.println("Teste Newton Evaluate");
 
         double[] x = { -1, 1, 3 };
         double[] y = { -3, 1, -3 };
         NewtonPolynom p = new NewtonPolynom(x, y);
 
         System.out.println(p.evaluate(0) + " sollte sein: 0.0");
+        System.out.println(p.evaluate(1) + " sollte sein: 1.0");
         System.out.println("-------------------------------");
     }
 
     public static void testSplines() {
+        System.out.println("Teste Splines");
+
         CubicSpline spl = new CubicSpline();
         double[] y = { 2, 0, 2, 3 };
         spl.init(-1, 2, 3, y);
