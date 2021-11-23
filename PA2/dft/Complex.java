@@ -28,30 +28,55 @@ public class Complex {
      * Addiert zwei komplexe Zahlen.
      *
      * @return "this + other"
+     * (a + bi) + (c + di) = (a+c) + (b+d)i
      */
     public Complex add(Complex other) {
         // TODO: diese Methode ist zu implementieren
-        return null;
+        return new Complex(this.real + other.real, this.imaginary + other.imaginary);
     }
 
     /**
      * Substrahiert zwei komplexe Zahlen
      *
      * @return "this - other"
+     * (a + bi) - (c + di) = (a-c) + (b-d)i
      */
     public Complex sub(Complex other) {
         // TODO: diese Methode ist zu implementieren
-        return null;
+        return new Complex(this.real - other.real, this.imaginary - other.imaginary);
     }
 
     /**
      * Multipliziert zwei komplexe Zahlen
      *
      * @return "this * other"
+     * (a + bi) * (c + di) = (a-c) + (b+d)i
      */
     public Complex mul(Complex other) {
         // TODO: diese Methode ist zu implementieren
-        return null;
+        return new Complex(this.real - other.real, this.imaginary + other.imaginary);
+    }
+
+    /**
+     * Dividiert zwei komplexe Zahlen
+     *
+     * @return "this / other"
+     * (a + bi) * (c + di) = ((a*c + b*d) / (c^2 + d^2)) + ((b*c - ad) / (c^2 + d^2))i
+     * real := ((a*c + b*d) / (c^2 + d^2))
+     * imaginary := ((b*c - ad) / (c^2 + d^2))
+     */
+    public Complex div(Complex other) {
+        // TODO: diese Methode ist zu implementieren
+
+        double a = this.real;
+        double b = this.imaginary;
+        double c = other.real;
+        double d = other.imaginary;
+
+        double resReal = (a*c + b*d) / ((Math.pow(c, 2) + Math.pow(d, 2)));
+        double resImaginary = (b*c - a*d) / ((Math.pow(c, 2) + Math.pow(d, 2)));
+        
+        return new Complex(resReal, resImaginary);
     }
 
     /**
@@ -62,6 +87,7 @@ public class Complex {
     public Complex power(int n) {
         return Complex.fromPolar(Math.pow(getRadius(), n), n * getPhi());
     }
+
 
     /**
      * Gibt die komplex konjugierte Zahl zurueck
@@ -121,9 +147,16 @@ public class Complex {
     /**
      * Erstellt eine neue komplexe Zahl, gegeben durch den Radius r und den
      * Winkel phi.
+     * 
+     * z = r * exp(i*phi) = r * (cos(phi) + i * sin(phi))
+     * a := r*cos(phi)
+     * b := r*sin(phi)
+     * => z = a + bi tuuuuuuur
      */
     public static Complex fromPolar(double r, double phi) {
         // TODO: diese Methode ist zu implementieren
-        return null;
+        double a = r*Math.cos(phi);
+        double b = r*Math.sin(phi);
+        return new Complex(a,b);
     }
 }
