@@ -11,8 +11,24 @@ public class PageRank {
      *      zufaellig irgendeine Seite zu besuchen
      */
     public static double[][] buildProbabilityMatrix(int[][] L, double rho) {
-        //TODO: Diese Methode ist zu implementieren
-        return new double[2][2];
+        double[][] result = new double[L.length][];
+        for(int i = 0; i < L.length; i++) {
+            result[i] = new double[L.length];
+            for(int j = 0; j< L.length; j++) {
+                if(L[i][j] == 0) {
+                    result[i][j] = rho / (double) L.length;
+                } else {
+                    int numOfLinksFromJ = 0;
+                    for (int k = 0; k < L.length; k++) {
+                        numOfLinksFromJ += L[k][j];
+                    }
+                    // We assume that numOfLinksFromJ > 0 since every page links to itself
+                    double a_i_j = 1 / (double) numOfLinksFromJ;
+                    result[i][j] = ((1 - rho) * a_i_j) + (rho / (double) L.length);
+                }
+            }
+        }
+        return result;
     }
 
     /**
@@ -27,8 +43,19 @@ public class PageRank {
      *
      */
     public static double[] rank(int[][] L, double rho) {
-        //TODO: Diese Methode ist zu implementieren
-        return new double[2];
+        double[][] A = buildProbabilityMatrix(L, rho);
+        for(int i = 0; i < A.length; i++) {
+            A[i][i] -= 1;
+        }
+        double[] p = Gauss.solveSing(A);
+        double sumOverP = 0;
+        for(int i = 0; i < p.length; i++) {
+            sumOverP += p[i];
+        }
+        for(int i = 0; i < p.length; i++) {
+            p[i] *= 1 / sumOverP;
+        }
+        return p;
     }
 
     /**
