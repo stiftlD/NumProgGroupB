@@ -16,6 +16,7 @@ public class PageRank {
             result[i] = new double[L.length];
             for(int j = 0; j< L.length; j++) {
                 if(L[i][j] == 0) {
+                    // a_i_j = 0
                     result[i][j] = rho / (double) L.length;
                 } else {
                     int numOfLinksFromJ = 0;
@@ -44,10 +45,13 @@ public class PageRank {
      */
     public static double[] rank(int[][] L, double rho) {
         double[][] A = buildProbabilityMatrix(L, rho);
+        // A = A - I
         for(int i = 0; i < A.length; i++) {
             A[i][i] -= 1;
         }
+        // (A-I)*p=0
         double[] p = Gauss.solveSing(A);
+        // Normalise p
         double sumOverP = 0;
         for(int i = 0; i < p.length; i++) {
             sumOverP += p[i];
