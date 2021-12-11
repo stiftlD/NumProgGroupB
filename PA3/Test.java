@@ -141,4 +141,3 @@ public class Test {
         return Util.vectorCompare(result, correctResult);
     }
 }
-}
