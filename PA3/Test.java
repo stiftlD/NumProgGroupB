@@ -52,7 +52,7 @@ public class Test {
             System.out
                     .println("  primitiver und unvollstaendiger Test der Methode solve");
             x = Gauss.solve(C, b);
-            if (Util.vectorCompare(x, xC)) {
+            if (Util.vectorCompare(x, xC) && testSolve()) {
                 System.out.println("    Richtiges Ergebnis");
             } else {
                 System.out.println("    FEHLER: falsches Ergebnis:");
@@ -130,4 +130,15 @@ public class Test {
             (new GUI()).setVisible(true);
         }
     }
+
+    public static boolean testSolve(){
+        // solve example LSE from assignment
+        double[][] A = {{1.0, 4.0, 8.0}, {0.0, 2.0, 2.0, 4.0}, {0.0, -3.0, -7.0, 2.0}, {0.0, 1.0, 5.0, 2.0}};
+        double[] b = {7.0, 0.0, 1.0, 2.0};
+
+        double[] result = Gauss.solve(A, b);
+        double[] correctResult = {6.875, -1.25, 0.5, 0.375};
+        return Util.vectorCompare(result, correctResult);
+    }
+}
 }
