@@ -10,8 +10,23 @@ public class Gauss {
      * b: Ein Vektor der Laenge n
      */
     public static double[] backSubst(double[][] R, double[] b) {
-        //TODO: Diese Methode ist zu implementieren
-        return null;
+        int n = b.length;
+
+        double[] x = new double[n];
+        double[] a;
+
+        for (int i = n-1; i >= 0; i--){
+            a = R[i];
+            
+            double constant = 0.0; //bereits berechnete a*x
+                for (int j = i+1; j < n; j++){
+                    constant += a[j] * x[j];
+                }
+
+            x[i] = (b[i] - constant) / a[i];
+        }
+
+        return x;
     }
 
     /**
@@ -22,8 +37,46 @@ public class Gauss {
      * b: Ein Vektor der Laenge n
      */
     public static double[] solve(double[][] A, double[] b) {
-        //TODO: Diese Methode ist zu implementieren
-        return null;
+        // Clone A and b to avoid modified input parameters
+        double[][] _A = new double[A.length][];
+        for (int r = 0; r < A.length; r++) {
+            _A[r] = A[r].clone();
+        }
+        double[] _b = b.clone();
+
+        // Elimination
+        for (int k = 0; k < _A.length; k++) {
+            // Find row with maximum absolute value in kth column
+            double maxAbsValueInKthColumn = _A[k][k];
+            int indexOfMaxAbsValueInKthColumn = k;
+            for (int i = k + 1; i < _A.length; i++) {
+                if (Math.abs(_A[i][k]) > maxAbsValueInKthColumn) {
+                    indexOfMaxAbsValueInKthColumn = i;
+                    maxAbsValueInKthColumn = Math.abs(_A[i][k]);
+                }
+            }
+            // Exchange rows if needed
+            if (indexOfMaxAbsValueInKthColumn != k) {
+                double tmpB = _b[k];
+                _b[k] = _b[indexOfMaxAbsValueInKthColumn];
+                _b[indexOfMaxAbsValueInKthColumn] = tmpB;
+                double[] tmpRow = _A[k];
+                _A[k] = _A[indexOfMaxAbsValueInKthColumn];
+                _A[indexOfMaxAbsValueInKthColumn] = tmpRow;
+            }
+            // Gauß
+            for (int i = k + 1; i < _A.length; i++) {
+                double multiplier = _A[i][k] / _A[k][k];
+                _A[i][k] = 0;
+                for (int j = k+1; j < _A.length; j++) {
+                    _A[i][j] -= multiplier * _A[k][j];
+                }
+                _b[i] -= multiplier * _b[k];
+            }
+        }
+
+        // BackSubstitution
+        return backSubst(_A, _b);
     }
 
     /**
@@ -44,8 +97,61 @@ public class Gauss {
      * A: Eine singulaere Matrix der Groesse n x n
      */
     public static double[] solveSing(double[][] A) {
-        //TODO: Diese Methode ist zu implementieren
-        return null;
+        // Clone A and b to avoid modified input parameters
+        double[][] _A = new double[A.length][];
+        for (int r = 0; r < A.length; r++) {
+            _A[r] = A[r].clone();
+        }
+
+        // Elimination
+        for (int k = 0; k < _A.length; k++) {
+            // Find row with maximum absolute value in kth column
+            double maxAbsValueInKthColumn = _A[k][k];
+            int indexOfMaxAbsValueInKthColumn = k;
+            for (int i = k + 1; i < _A.length; i++) {
+                if (Math.abs(_A[i][k]) > maxAbsValueInKthColumn) {
+                    indexOfMaxAbsValueInKthColumn = i;
+                    maxAbsValueInKthColumn = Math.abs(_A[i][k]);
+                }
+            }
+            // Skip if entire column is already zeroed
+            if(maxAbsValueInKthColumn < Math.pow(Math.E, -10)) {
+                // Create T
+                double[][] T = new double[k][];
+                for (int i = 0; i < k; i++) {
+                    T[i] = _A[i]; // Ignore fact that rows might be too long (T[i].lenght > k)
+                }
+                // Create -v
+                double[] v = new double[k];
+                for (int i = 0; i < k; i++) {
+                    v[i] = _A[i][k] * (-1);
+                }
+                double[] x = backSubst(T, v);
+                double[] result = new double[A.length];
+                for (int i = 0; i < x.length; i++) {
+                    result[i] = x[i];
+                }
+                result[x.length] = 1;
+                return result;
+            }
+            // Exchange rows if needed
+            if (indexOfMaxAbsValueInKthColumn != k) {
+                double[] tmpRow = _A[k];
+                _A[k] = _A[indexOfMaxAbsValueInKthColumn];
+                _A[indexOfMaxAbsValueInKthColumn] = tmpRow;
+            }
+            // Gauß
+            for (int i = k + 1; i < _A.length; i++) {
+                double multiplier = _A[i][k] / _A[k][k];
+                _A[i][k] = 0;
+                for (int j = k+1; j < _A.length; j++) {
+                    _A[i][j] -= multiplier * _A[k][j];
+                }
+            }
+        }
+
+        // Return [0,...,0] if A is invertible
+        return new double[A.length];
     }
 
     /**
