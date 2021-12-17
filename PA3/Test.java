@@ -133,11 +133,11 @@ public class Test {
 
     public static boolean testSolve(){
         // solve example LSE from assignment
-        double[][] A = {{1.0, 4.0, 8.0}, {0.0, 2.0, 2.0, 4.0}, {0.0, -3.0, -7.0, 2.0}, {0.0, 1.0, 5.0, 2.0}};
-        double[] b = {7.0, 0.0, 1.0, 2.0};
+        double[][] A = {{0.5, -0.8, 0.375, 0.1}, {0.75, 0.375, 0.2, -2.0}, {0.8, -0.5, 0.25, -7.9}, {1.0, 0.0, -0.5, 3.0}};
+        double[] b = {1.0, 0.0, 0.3, 0.15};
 
         double[] result = Gauss.solve(A, b);
-        double[] correctResult = {6.875, -1.25, 0.5, 0.375};
+        double[] correctResult = {0.3241843185596508, -0.7017303190346402, 0.7208418624113636, 0.062078870882010334};
         return Util.vectorCompare(result, correctResult);
     }
 }
