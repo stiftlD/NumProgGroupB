@@ -1,5 +1,6 @@
 package ode;
 import java.util.Arrays;
+import java.math.*;
 
 /**
  * Numerische Berechnung von Konvergenzordnungen gegebener ODE-Solver.
@@ -89,6 +90,20 @@ public class Konvergenzordnung {
     public double order(Einschrittverfahren verfahren, double h)
     {
         // TODO: diese Methode ist zu implementieren
-        return 0.0;
+        /*
+            e_h := ||x_h(T) - x*(T)|| = error(x_h(T)) = error(integrate(x, h))
+            h_2 := h/2 := h1/2
+            p ~ (ln(e_h1 / e_h2)) / (ln(h1 / h2))
+        */
+
+        double h1 = h;
+        double h2 = h/2;
+
+        double e_h1 = error(integrate(verfahren, h1));
+        double e_h2 = error(integrate(verfahren, h2));
+
+        double p = Math.log(e_h1/e_h2) / Math.log(h1/h2);
+
+        return p;
     }
 }
